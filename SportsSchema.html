@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports League</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background-color: #0c4594; }
+    </style>
+</head>
+<body>
+    <h1>Sports League</h1>
+    
+    <h2>Teams</h2>
+    <table id="teams">
+        <thead>
+            <tr>
+                <th>TeamID</th>
+                <th>TeamName</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
+    
+    <h2>Players</h2>
+    <table id="players">
+        <thead>
+            <tr>
+                <th>PlayerID</th>
+                <th>PlayerName</th>
+                <th>TeamID</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
+    
+    <h2>Referees</h2>
+    <table id="referees">
+        <thead>
+            <tr>
+                <th>RefereeID</th>
+                <th>RefereeName</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    
+    <h2>Seasons</h2>
+    <table id="seasons">
+        <thead>
+            <tr>
+                <th>SeasonID</th>
+                <th>SeasonName</th>
+                <th>StartDate</th>
+                <th>EndDate</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
+    
+    <h2>Matches</h2>
+    <table id="matches">
+        <thead>
+            <tr>
+                <th>MatchID</th>
+                <th>SeasonID</th>
+                <th>MatchDate</th>
+                <th>HomeTeamID</th>
+                <th>AwayTeamID</th>
+                <th>HomeTeamScore</th>
+                <th>AwayTeamScore</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    
+    <h2>Goals</h2>
+    <table id="goals">
+        <thead>
+            <tr>
+                <th>GoalID</th>
+                <th>MatchID</th>
+                <th>PlayerID</th>
+                <th>GoalsScored</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    
+    <h2>Match Referees</h2>
+    <table id="match-referees">
+        <thead>
+            <tr>
+                <th>MatchRefereeID</th>
+                <th>MatchID</th>
+                <th>RefereeID</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    
+    <h2>Team Standings</h2>
+    <table id="team-standings">
+        <thead>
+            <tr>
+                <th>TeamID</th>
+                <th>TeamName</th>
+                <th>GoalsScored</th>
+                <th>GoalsConceded</th>
+                <th>GoalDifference</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        const teams = [
+            { TeamID: 1, TeamName: 'Team A' },
+            { TeamID: 2, TeamName: 'Team B' }
+        ];
+        const players = [
+            { PlayerID: 1, PlayerName: 'Alice', TeamID: 1 },
+            { PlayerID: 2, PlayerName: 'Bob', TeamID: 2 }
+        ];
+        const referees = [
+            { RefereeID: 1, RefereeName: 'Referee 1' },
+            { RefereeID: 2, RefereeName: 'Referee 2' }
+        ];
+        const seasons = [
+            { SeasonID: 1, SeasonName: '2024 Season', StartDate: '2024-01-09', EndDate: '2024-12-31' }
+        ];
+        const matches = [
+            { MatchID: 1, SeasonID: 1, MatchDate: '2024-07-01', HomeTeamID: 1, AwayTeamID: 2, HomeTeamScore: 2, AwayTeamScore: 1 }
+        ];
+        const goals = [
+            { GoalID: 1, MatchID: 1, PlayerID: 1, GoalsScored: 7 },
+            { GoalID: 2, MatchID: 1, PlayerID: 2, GoalsScored: 8 }
+        ];
+        const matchReferees = [
+            { MatchRefereeID: 1, MatchID: 1, RefereeID: 1 }
+        ];
+
+        function insertData(tableId, data) {
+            const tableBody = document.querySelector(`#${tableId} tbody`);
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                Object.values(item).forEach(value => {
+                    const cell = document.createElement('td');
+                    cell.textContent = value;
+                    row.appendChild(cell);
+                });
+                tableBody.appendChild(row);
+            });
+        }
+
+        function calculateStandings() {
+            const standings = teams.map(team => {
+                const homeScores = matches.filter(match => match.HomeTeamID === team.TeamID)
+                                          .reduce((sum, match) => sum + match.HomeTeamScore, 0);
+                const awayScores = matches.filter(match => match.AwayTeamID === team.TeamID)
+                                          .reduce((sum, match) => sum + match.AwayTeamScore, 0);
+                const goalsScored = homeScores + awayScores;
+                const goalsConceded = matches.filter(match => match.HomeTeamID === team.TeamID)
+                                              .reduce((sum, match) => sum + match.AwayTeamScore, 0) +
+                                      matches.filter(match => match.AwayTeamID === team.TeamID)
+                                              .reduce((sum, match) => sum + match.HomeTeamScore, 0);
+                return {
+                    TeamID: team.TeamID,
+                    TeamName: team.TeamName,
+                    GoalsScored: goalsScored,
+                    GoalsConceded: goalsConceded,
+                    GoalDifference: goalsScored - goalsConceded
+                };
+            });
+
+            insertData('team-standings', standings.sort((a, b) => b.GoalsScored - a.GoalsScored || b.GoalDifference - a.GoalDifference));
+        }
+
+        insertData('teams', teams);
+        insertData('players', players);
+        insertData('referees', referees);
+        insertData('seasons', seasons);
+        insertData('matches', matches);
+        insertData('goals', goals);
+        insertData('match-referees', matchReferees);
+        calculateStandings();
+    </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Craigslist</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background-color: #1bbb5e; }
+    </style>
+</head>
+<body>
+    <h1>Craigslist</h1>
+    
+    <h2>Regions</h2>
+    <table id="regions">
+        <thead>
+            <tr>
+                <th>RegionID</th>
+                <th>RegionName</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    
+    <h2>Users</h2>
+    <table id="users">
+        <thead>
+            <tr>
+                <th>UserID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>PreferredRegionID</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    
+    <h2>Posts</h2>
+    <table id="posts">
+        <thead>
+            <tr>
+                <th>PostID</th>
+                <th>Title</th>
+                <th>Text</th>
+                <th>UserID</th>
+                <th>Location</th>
+                <th>RegionID</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    
+    <h2>Categories</h2>
+    <table id="categories">
+        <thead>
+            <tr>
+                <th>CategoryID</th>
+                <th>CategoryName</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    
+    <h2>Post Categories</h2>
+    <table id="post-categories">
+        <thead>
+            <tr>
+                <th>PostCategoryID</th>
+                <th>PostID</th>
+                <th>CategoryID</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        const regions = [
+            { RegionID: 1, RegionName: 'San Francisco' },
+            { RegionID: 2, RegionName: 'Atlanta' }
+        ];
+        const users = [
+            { UserID: 1, Username: 'john_doe', Email: 'john@personal.com', PreferredRegionID: 1 },
+            { UserID: 2, Username: 'raiya_smith', Email: 'jane@epersonal.com', PreferredRegionID: 2 }
+        ];
+        const posts = [
+            { PostID: 1, Title: 'Bike for Sale', Text: 'A gently used bike.', UserID: 1, Location: 'Downtown', RegionID: 1 },
+            { PostID: 2, Title: 'Sofa for Sale', Text: 'A comfortable sofa.', UserID: 2, Location: 'Midtown', RegionID: 2 }
+        ];
+        const categories = [
+            { CategoryID: 1, CategoryName: 'Furniture' },
+            { CategoryID: 2, CategoryName: 'Electronics' }
+        ];
+        const postCategories = [
+            { PostCategoryID: 1, PostID: 1, CategoryID: 2 },
+            { PostCategoryID: 2, PostID: 2, CategoryID: 1 }
+        ];
+
+        function insertData(tableId, data) {
+            const tableBody = document.querySelector(`#${tableId} tbody`);
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                Object.values(item).forEach(value => {
+                    const cell = document.createElement('td');
+                    cell.textContent = value;
+                    row.appendChild(cell);
+                });
+                tableBody.appendChild(row);
+            });
+        }
+
+        insertData('regions', regions);
+        insertData('users', users);
+        insertData('posts', posts);
+        insertData('categories', categories);
+        insertData('post-categories', postCategories);
+    </script>
+</body>
+</html>

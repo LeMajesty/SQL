@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Center</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background-color: #9cdf0c; }
+    </style>
+</head>
+<body>
+    <h1>Medical Center</h1>
+    
+    <h2>Doctors</h2>
+    <table id="doctors">
+        <thead>
+            <tr>
+                <th>DoctorID</th>
+                <th>Name</th>
+                <th>Specialization</th>
+                <th>ContactInfo</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    
+    <h2>Patients</h2>
+    <table id="patients">
+        <thead>
+            <tr>
+                <th>PatientID</th>
+                <th>Name</th>
+                <th>DateOfBirth</th>
+                <th>ContactInfo</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    
+    <h2>Diseases</h2>
+    <table id="diseases">
+        <thead>
+            <tr>
+                <th>DiseaseID</th>
+                <th>DiseaseName</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    
+    <h2>Visits</h2>
+    <table id="visits">
+        <thead>
+            <tr>
+                <th>VisitID</th>
+                <th>Date</th>
+                <th>DoctorID</th>
+                <th>PatientID</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    
+    <h2>Patient Diseases</h2>
+    <table id="patient-diseases">
+        <thead>
+            <tr>
+                <th>PatientDiseaseID</th>
+                <th>VisitID</th>
+                <th>DiseaseID</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        const doctors = [
+            { DoctorID: 1, Name: 'Dr. Smith', Specialization: 'Cardiologist', ContactInfo: '5535-1564' },
+            { DoctorID: 2, Name: 'Dr. Kawalski', Specialization: 'Neurologist', ContactInfo: '4535-5878' }
+        ];
+        const patients = [
+            { PatientID: 1, Name: 'Alice Johnson', DateOfBirth: '1980-05-15', ContactInfo: '5643-8765' },
+            { PatientID: 2, Name: 'Bob Brown', DateOfBirth: '1992-11-23', ContactInfo: '6735-4321' }
+        ];
+        const diseases = [
+            { DiseaseID: 1, DiseaseName: 'Diabetes', Description: 'A chronic condition that affects the way the body processes blood sugar.' },
+            { DiseaseID: 2, DiseaseName: 'Hypertension', Description: 'A condition in which the force of the blood against the artery walls is too high.' }
+        ];
+        const visits = [
+            { VisitID: 1, Date: '2024-07-01', DoctorID: 1, PatientID: 1 },
+            { VisitID: 2, Date: '2024-07-02', DoctorID: 2, PatientID: 2 }
+        ];
+        const patientDiseases = [
+            { PatientDiseaseID: 1, VisitID: 1, DiseaseID: 1 },
+            { PatientDiseaseID: 2, VisitID: 2, DiseaseID: 2 }
+        ];
+
+        function insertData(tableId, data) {
+            const tableBody = document.querySelector(`#${tableId} tbody`);
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                Object.values(item).forEach(value => {
+                    const cell = document.createElement('td');
+                    cell.textContent = value;
+                    row.appendChild(cell);
+                });
+                tableBody.appendChild(row);
+            });
+        }
+
+        insertData('doctors', doctors);
+        insertData('patients', patients);
+        insertData('diseases', diseases);
+        insertData('visits', visits);
+        insertData('patient-diseases', patientDiseases);
+    </script>
+</body>
+</html>
